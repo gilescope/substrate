@@ -1484,6 +1484,7 @@ mod allocator_impl {
 pub fn panic(info: &core::panic::PanicInfo) -> ! {
 	let message = sp_std::alloc::format!("{}", info);
 	logging::log(LogLevel::Error, "runtime", message.as_bytes());
+	#[allow(unused_unsafe)] // Only became safe in Sep2021 nightlies so allow for backward compatability.
 	unsafe { core::arch::wasm32::unreachable() };
 }
 
@@ -1492,6 +1493,7 @@ pub fn panic(info: &core::panic::PanicInfo) -> ! {
 #[alloc_error_handler]
 pub fn oom(_: core::alloc::Layout) -> ! {
 	logging::log(LogLevel::Error, "runtime", b"Runtime memory exhausted. Aborting");
+	#[allow(unused_unsafe)] // Only became safe in Sep2021 nightlies so allow for backward compatability.
 	unsafe { core::arch::wasm32::unreachable() };
 }
 
